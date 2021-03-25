@@ -3,10 +3,11 @@
 package joystick
 
 import (
-	"golang.org/x/sys/unix"
 	"os"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/unix"
 )
 
 const (

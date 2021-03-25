@@ -89,7 +89,11 @@ func updateState(js *joystickImpl) {
 	for err == nil {
 		ev, err = js.getEvent()
 
-		if ev.Type&_JS_EVENT_BUTTON != 0 {
+		// check if first event
+		js.checkEvent(ev.Type)
+
+		// if ev.Type&_JS_EVENT_BUTTON != 0 {
+		if ev.Type == _JS_EVENT_BUTTON {
 			js.mutex.Lock()
 			if ev.Value == 0 {
 				js.state.Buttons &= ^(1 << uint(ev.Number))
@@ -99,7 +103,8 @@ func updateState(js *joystickImpl) {
 			js.mutex.Unlock()
 		}
 
-		if ev.Type&_JS_EVENT_AXIS != 0 {
+		// if ev.Type&_JS_EVENT_AXIS != 0 {
+		if ev.Type == _JS_EVENT_AXIS {
 			js.mutex.Lock()
 			js.state.AxisData[ev.Number] = int(ev.Value)
 			js.mutex.Unlock()
@@ -177,4 +182,16 @@ func (j *joystickImpl) getEvent() (event, error) {
 		return event{}, err
 	}
 	return ev, nil
+}
+
+func (js *joystickImpl) checkEvent(Type uint8) {
+	// Has been set yet?
+	if !js.state.FirstEvent {
+		// Check if event
+		if Type == _JS_EVENT_AXIS || Type == _JS_EVENT_BUTTON {
+			js.mutex.Lock()
+			js.state.FirstEvent = true
+			js.mutex.Unlock()
+		}
+	}
 }

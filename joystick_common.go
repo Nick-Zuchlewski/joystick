@@ -31,6 +31,8 @@ type State struct {
 	AxisData []int
 	// The state of each button as a bit in a 32 bit integer. 1 = pressed, 0 = not pressed
 	Buttons uint32
+	// A flag to notify the reader that at least one event has occured
+	FirstEvent bool
 }
 
 // Interface Joystick provides access to the Joystick opened with the Open() function
