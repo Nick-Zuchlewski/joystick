@@ -51,6 +51,24 @@ func Open(id int) (Joystick, error) {
 		return nil, err
 	}
 
+	return open(f)
+}
+
+func OpenSymlink(symlink string) (Joystick, error) {
+	if len(symlink) == 0 {
+		return nil, errors.New("Symlink cannot be empty")
+	}
+
+	f, err := os.OpenFile(fmt.Sprintf("/dev/%s", symlink), os.O_RDONLY, 0666)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return open(f)
+}
+
+func open(f *os.File) (Joystick, error) {
 	var axisCount uint8 = 0
 	var buttCount uint8 = 0
 	var buffer [256]byte
