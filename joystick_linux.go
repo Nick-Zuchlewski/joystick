@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"sync"
 	"unsafe"
+	"errors"
 )
 
 const (
