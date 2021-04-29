@@ -33,6 +33,8 @@ type State struct {
 	Buttons uint32
 	// A flag to notify the reader that at least one event has occured
 	FirstEvent bool
+	// A flag to notify that something changed
+	NewEvent bool
 }
 
 // Interface Joystick provides access to the Joystick opened with the Open() function
