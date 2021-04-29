@@ -57,7 +57,7 @@ func Open(id int) (Joystick, error) {
 
 func OpenSymlink(symlink string) (Joystick, error) {
 	if len(symlink) == 0 {
-		return nil, errors.New("Symlink cannot be empty")
+		return nil, errors.New("symlink cannot be empty")
 	}
 
 	f, err := os.OpenFile(fmt.Sprintf("/dev/%s", symlink), os.O_RDONLY, 0666)
