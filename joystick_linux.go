@@ -76,17 +76,17 @@ func open(f *os.File) (Joystick, error) {
 
 	ioerr := ioctl(f, _JSIOCGAXES, unsafe.Pointer(&axisCount))
 	if ioerr != 0 {
-		panic(ioerr)
+		return nil, ioerr
 	}
 
 	ioerr = ioctl(f, _JSIOCGBUTTONS, unsafe.Pointer(&buttCount))
 	if ioerr != 0 {
-		panic(ioerr)
+		return nil, ioerr
 	}
 
 	ioerr = ioctl(f, _JSIOCGNAME(len(buffer)-1), unsafe.Pointer(&buffer))
 	if ioerr != 0 {
-		panic(ioerr)
+		return nil, ioerr
 	}
 
 	js := &joystickImpl{}
@@ -188,7 +188,7 @@ func (j *joystickImpl) getEvent() (event, error) {
 	var ev event
 
 	if j.file == nil {
-		panic("file is nil")
+		return event{}, errors.New("file is nil")
 	}
 
 	b := make([]byte, 8)
